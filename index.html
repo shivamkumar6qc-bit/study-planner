@@ -248,6 +248,8 @@ body {
     <label for="taskReminder">Study Reminder:</label>
 <input type="datetime-local" id="taskReminder">
 <button id="enableNotifications">Enable Notifications</button>
+<label for="taskReminder">Study Reminder:</label>
+<input type="datetime-local" id="taskReminder">
 </div>
 
 <div id="myTasksSection">
@@ -1049,6 +1051,17 @@ navigator.serviceWorker.ready.then(function (registration) {
         alert("Notification permission was not granted.");
     }
 };
+document.getElementById("taskReminder").addEventListener("change", function () {
+    let reminderTime = this.value;
+
+    if (!reminderTime) {
+        return;
+    }
+
+    localStorage.setItem("studyReminderTime", reminderTime);
+
+    alert("Study reminder time saved!");
+});
 </script>
 </body> 
 </html>
