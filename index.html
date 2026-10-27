@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Study Planner</title>
+
+    <style>
+        :root {
+        body {
+    background-color: #000000;
+    color: var(--text-color);
+}
+    --bg-color: #f1f5f9;
+    --card-color: #ffffff;
+    --text-color: #1e293b;
+    --border-color: #e2e8f0;
+    --accent-color: #2563eb;
+}
+        body {
+            background-color: #f0f4ff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #2541b2;
+        }
+
+        p {
+            color: #333333;
+            font-size: 18px;
+        }
+    #goalProgressBar {
+    width: 100%;
+    height: 20px;
+    accent-color: gray;
+}
+
+#goalProgressBar.completed {
+    accent-color: green;
+}
+button[onclick="clearAllTasks()"] {
+    background-color: #e74c3c;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 10px 0;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button[onclick="clearAllTasks()"]:active {
+    transform: scale(0.96);
+}
+
+button[onclick="clearAllTasks()"]:hover {
+    background-color: #c0392b;
+}
+.task-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: end;
+    gap: 18px;
+    margin: 20px 0;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid #d6c8e8;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+.filter-group label {
+    font-weight: bold;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 10px;
+    border: 1px solid #b9a4d1;
+    border-radius: 6px;
+    font-size: 14px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+/* Website text styling */
+body {
+    font-size: 18px;
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* Main headings */
+h1 {
+    font-size: 38px;
+    font-weight: 800;
+}
+
+h2 {
+    font-size: 28px;
+    font-weight: 750;
+}
+
+/* Labels and task text */
+label,
+p,
+li {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Inputs and dropdowns */
+input,
+select,
+button {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Buttons */
+button {
+    font-style: italic;
+}
+/* Professional section cards */
+#addTaskForm,
+#dailyGoal,
+#studyProgress,
+#weeklyTimetable,
+#focusTimer,
+#taskList,
+#weeklyStudySummary {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    margin: 24px 0;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+/* Section headings */
+#addTaskForm h2,
+#dailyGoal h2,
+#studyProgress h2,
+#weeklyTimetable h2,
+#focusTimer h2,
+#weeklyStudySummary h2,
+#taskList h2 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    color: #1e293b;
+}
+
+/* Mobile-friendly spacing */
+@media (max-width: 600px) {
+    #addTaskForm,
+    #dailyGoal,
+    #studyProgress,
+    #weeklyTimetable,
+    #focusTimer,
+    #taskList,
+    #weeklyStudySummary {
+        padding: 16px;
+        margin: 16px 0;
+        border-radius: 12px;
+    }
+}
+#myTasksSection {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    margin: 24px 0;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+#weeklyProgressBar {
+    width: 100%;
+    height: 14px;
+    display: block;
+    margin-top: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+    accent-color: #2563eb;
+}
+body {
+    background-color: #000000;
+}
+
+#addTaskForm,
+#myTasksSection,
+#dailyGoal,
+#studyProgress,
+#weeklyStudySummary,
+#focusTimer,
+#weeklyTimetable {
+    background-color: #ffffff;
+}
+html {
+    background-color: #000000;
+}
+
+body {
+    background-color: #000000;
+    margin: 0;
+    min-height: 100vh;
+}
+body {
+    font-family: Arial, sans-serif;
+}
+
+#addTaskForm,
+#myTasksSection,
+#dailyGoal,
+#studyProgress,
+#weeklyStudySummary,
+#focusTimer,
+#weeklyTimetable {
+    border: 1px solid #d1d5db;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(255, 255, 255, 0.08);
+}
+</style>
+</head>
+
+<body>
+    <h1>Welcome to My Study Planner</h1>
+    <p id="todayDate"></p>
+    <p>Let's plan our studies and achieve our goals!</p>
+
+    <div id="addTaskForm">
+    <h2>Add Your Study Task</h2>
+
+    <input id="subject" type="text"
+           placeholder="Enter subject name">
+
+    <input id="task" type="text"
+           placeholder="What do you need to study?">
+           <input id="studyTime" type="time">
+
+    <button onclick="addTask()">Add Task</button>
+    <label for="taskReminder">Study Reminder:</label>
+<input type="datetime-local" id="taskReminder">
+</div>
+
+<div id="myTasksSection">
+<h2>My Tasks</h2>
+    <p id="taskCount">Total Tasks: 0</p>
+    <div class="task-filters">
+
+    <div class="filter-group">
+        <label for="timeFilter">Filter by Time:</label>
+        <select id="timeFilter">
+            <option value="all">All Times</option>
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+        </select>
+    </div>
+
+    <div class="filter-group">
+        <label for="taskSearch">Search Tasks:</label>
+        <input type="text" id="taskSearch"
+               placeholder="Search subject or task...">
+    </div>
+
+    <div class="filter-group">
+        <label for="statusFilter">Filter by Status:</label>
+        <select id="statusFilter">
+            <option value="all">All Tasks</option>
+            <option value="completed">Completed Tasks</option>
+            <option value="pending">Pending Tasks</option>
+        </select>
+    </div>
+
+</div>
+    <ul id="taskList"></ul>
+    <button onclick="clearAllTasks()">Clear All Tasks</button>
+<button onclick="sortTasksByTime()">Sort by Time</button>
+<button onclick="sortTasksBySubject()">Sort by Subject</button>
+<button id="exportBackup">Export Backup</button>
+<input type="file" id="importBackupFile" accept=".json">
+<button id="importBackup">Import Backup</button>
+    
+</div>    
+
+<div id="dailyGoal">    
+<h2>My Daily Goal</h2>
+<label for="dailyGoal">Aaj kitne tasks complete karne hain?</label>
+<input id="dailyGoal" type="number" min="1" max="50" value="3">
+<p id="goalText">Your daily goal: 3 tasks</p>
+<p id="goalProgressText">0 of 3 goal tasks completed</p>
+<progress id="goalProgressBar" value="0" max="3"></progress>
+<p id="goalMessage"></p>
+</div>
+
+<div id="studyProgress">
+<h2>Your Study Progress</h2>
+<p id="progressText">0 of 0 tasks completed</p>
+<progress id="progressBar" value="0" max="100"></progress>
+</div>
+
+<div id="weeklyStudySummary">
+<h2>Weekly Study Summary</h2>
+<p id="weeklyTotal">This week: 0 tasks completed</p>
+<div id="weeklyDailySummary"></div>
+<p id="weeklyCompletionPercentage">Weekly completion: 0%</p>
+<progress id="weeklyProgressBar" value="0" max="100"></progress>
+</div>    
+
+<div id="focusTimer">
+    <h2>Focus Timer</h2>
+    <p id="timerDisplay">25:00</p>
+    <button id="startTimer">Start</button>
+    <button id="pauseTimer">Pause</button>
+    <button id="resetTimer">Reset</button>
+</div>
+<div id="weeklyTimetable">
+    <h2>Weekly Timetable</h2>
+
+    <label for="timetableDay">Select Day:</label>
+    <select id="timetableDay">
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+    </select>
+    <label for="dayFilter">Show Day:</label>
+<select id="dayFilter">
+    <option value="all">All Days</option>
+    <option value="Monday">Monday</option>
+    <option value="Tuesday">Tuesday</option>
+    <option value="Wednesday">Wednesday</option>
+    <option value="Thursday">Thursday</option>
+    <option value="Friday">Friday</option>
+    <option value="Saturday">Saturday</option>
+    <option value="Sunday">Sunday</option>
+</select>
+
+    <label for="timetableSubject">Subject:</label>
+    <input type="text" id="timetableSubject" placeholder="Enter subject">
+
+    <label for="timetableTime">Study Time:</label>
+    <input type="time" id="timetableTime">
+
+    <button id="addTimetableEntry">Add to Timetable</button>
+
+    <ul id="timetableList"></ul>
+</div>
+    <script>
+       function saveTasks() {
+    localStorage.setItem("studyPlannerTasks", 
+        document.getElementById("taskList").innerHTML);
+}
+function updateWeeklySummary() {
+    let tasks = document.querySelectorAll("#taskList li");
+    let weeklyTotal = 0;
+let Today = new Date();
+
+    let days = [
+        "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "Saturday", "Sunday"
+    ];
+
+    let dailyCounts = {};
+    days.forEach(function(day) {
+        dailyCounts[day] = 0;
+    });
+
+    let today = new Date();
+    let monday = new Date(today);
+    let dayOfWeek = today.getDay();
+
+    let daysSinceMonday = (dayOfWeek + 6) % 7;
+    monday.setDate(today.getDate() - daysSinceMonday);
+    monday.setHours(0, 0, 0, 0);
+
+    tasks.forEach(function(task) {
+        let completedDate = task.dataset.completedDate;
+
+        if (!completedDate) return;
+
+        let date = new Date(completedDate + "T00:00:00");
+
+        if (date < monday || date > today) return;
+
+        weeklyTotal++;
+
+        let weekdayIndex = (date.getDay() + 6) % 7;
+        dailyCounts[days[weekdayIndex]]++;
+    });
+
+    document.getElementById("weeklyTotal").textContent =
+        "This week: " + weeklyTotal + " tasks completed";
+      let completedTasks = document.querySelectorAll(
+    "#taskList li button"
+);
+
+let totalTasks = document.querySelectorAll("#taskList li").length;
+
+let weeklyPercentage = totalTasks === 0
+    ? 0
+    : Math.round((weeklyTotal / totalTasks) * 100);
+
+weeklyPercentage = Math.min(100, weeklyPercentage);
+
+document.getElementById("weeklyCompletionPercentage").textContent =
+    "Weekly completion: " + weeklyPercentage + "%";
+    document.getElementById("weeklyProgressBar").value =
+    weeklyPercentage;
+    let summaryHTML = "";
+
+    days.forEach(function(day) {
+        summaryHTML += "<p>" + day + ": " +
+            dailyCounts[day] + " tasks completed</p>";
+    });
+
+    document.getElementById("weeklyDailySummary").innerHTML =
+        summaryHTML;
+}
+function getLocalDate() {
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = String(today.getMonth() + 1).padStart(2, "0");
+    let day = String(today.getDate()).padStart(2, "0");
+
+    return year + "-" + month + "-" + day;
+}
+function loadTasks() {
+    document.getElementById("taskList").innerHTML =
+        localStorage.getItem("studyPlannerTasks") || "";
+
+    restoreTaskButtons();
+    document.querySelectorAll("#taskList li").forEach(function(li) {      
+       let match = li.textContent.match(/\((\d{2}):(\d{2})\)/);
+
+       console.log("Task time match:", match);
+    if (match) {
+        let hour = Number(match[1]);
+
+        if (hour < 12) {
+            li.dataset.period = "morning";
+        } else if (hour < 17) {
+            li.dataset.period = "afternoon";
+        } else {
+            li.dataset.period = "evening";
+        }
+    }
+});
+    console.log("loadTasks completed");
+    console.log("Tasks found:", document.querySelectorAll("#taskList li").length);
+    updateTaskCount();
+    filterTasks();
+    updateWeeklySummary();
+}
+function restoreTaskButtons() {
+    let tasks = document.querySelectorAll("#taskList li");
+
+    tasks.forEach(function(li) {
+        let buttons = li.querySelectorAll("button");
+       let editButton = buttons[0];
+let completeButton = buttons[1];
+let deleteButton = buttons[2];
+
+       if (!editButton || !completeButton || !deleteButton) return;
+      editButton.onclick = function () {
+    let currentText = li.firstChild.textContent;
+    let match = currentText.match(/^(.*?) \((.*?)\): (.*?) $/);
+
+    if (!match) {
+        alert("Task could not be edited.");
+        return;
+    }
+
+    let newSubject = prompt("Enter new subject:", match[1]);
+    if (newSubject === null || newSubject.trim() === "") return;
+
+    let newTask = prompt("Enter new task:", match[3]);
+    let newStudyTime = prompt(
+    "Enter new study time (HH:MM):",
+    match[2] === "No time selected" ? "" : match[2]
+);
+
+if (newStudyTime === null) return;
+    if (newTask === null || newTask.trim() === "") return;
+
+    let timeValue = newStudyTime.trim();
+
+li.firstChild.textContent =
+    newSubject.trim() + " (" +
+    (timeValue || "No time selected") + "): " +
+    newTask.trim() + " ";
+
+let hour = timeValue ? Number(timeValue.split(":")[0]) : -1;
+
+if (hour === -1) {
+    li.dataset.period = "none";
+} else if (hour < 12) {
+    li.dataset.period = "morning";
+} else if (hour < 17) {
+    li.dataset.period = "afternoon";
+} else {
+    li.dataset.period = "evening";
+}
+    saveTasks();
+};
+
+        completeButton.onclick = function() {
+            let isCompleted = li.style.textDecoration === "line-through";
+
+            if (isCompleted) {
+                li.style.textDecoration = "none";
+                li.style.color = "";
+                completeButton.textContent = "Complete";
+                delete li.dataset.completedDate;
+                delete li.dataset.completedDate;
+               } else {
+                li.style.textDecoration = "line-through";
+                li.style.color = "gray";
+                completeButton.textContent = "Undo";
+                li.dataset.completedDate = new Date().getFullYear() + "-" +
+    String(new Date().getMonth() + 1).padStart(2, "0") + "-" +
+    String(new Date().getDate()).padStart(2, "0");
+                li.dataset.completedDate = getLocalDate();
+                
+            }
+
+            saveTasks();
+            updateProgress();
+            updateGoalProgress();
+            updateWeeklySummary();
+        };
+
+        deleteButton.onclick = function() {
+    li.remove();
+    console.log("Delete handler is running");
+    saveTasks();
+    updateProgress();
+    updateGoalProgress();
+    updateTaskCount();
+    updateWeeklySummary();
+    console.log("Delete clicked. Remaining tasks:", document.querySelectorAll("#taskList li").length);
+};
+    });
+}
+function clearAllTasks() {
+    let confirmDelete = confirm("Are you sure you want to delete all tasks?");
+
+    if (confirmDelete) {
+        document.getElementById("taskList").innerHTML = "";
+        saveTasks();
+        updateProgress();
+        updateGoalProgress();
+    updateTaskCount();
+    }
+}
+function updateProgress() {
+    let tasks = document.querySelectorAll("#taskList li");
+    let total = tasks.length;
+    let completed = 0;
+
+    tasks.forEach(function (task) {
+        if (task.style.textDecoration.includes("line-through")) {
+            completed++;
+        }
+    });
+
+    let percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+    document.getElementById("progressText").textContent =
+        completed + " of " + total + " tasks completed (" + percentage + "%)";
+
+    document.getElementById("progressBar").value = percentage;
+}
+function updateTaskCount() {
+    let total = document.querySelectorAll("#taskList li").length;
+
+    document.getElementById("taskCount").textContent =
+        "Total Tasks: " + total;
+}
+function showTodayDate() {
+    let today = new Date();
+
+    document.getElementById("todayDate").textContent =
+        "Today's Date: " + today.toLocaleDateString("en-IN", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+}
+
+showTodayDate();
+function updateGoal() {
+    let goal = Number(document.getElementById("dailyGoal").value);
+
+    if (goal < 1 || !Number.isFinite(goal)) {
+        document.getElementById("goalText").textContent =
+            "Please enter a goal of at least 1 task.";
+        return;
+    }
+
+    document.getElementById("goalText").textContent =
+        "Your daily goal: " + goal + " tasks";
+            updateGoalProgress();
+}
+
+document.getElementById("dailyGoal").addEventListener("input", updateGoal);
+function updateGoalProgress() {
+    let goal = Math.max(1, Number(document.getElementById("dailyGoal").value) || 3);
+    let tasks = document.querySelectorAll("#taskList li");
+    let completed = 0;
+
+    tasks.forEach(function(task) {
+        if (task.style.textDecoration.includes("line-through")) {
+            completed++;
+        }
+    });
+
+    if (goal < 1) {
+        goal = 1;
+    }
+
+    let progress = Math.min(completed, goal);
+
+    document.getElementById("goalProgressText").textContent =
+        progress + " of " + goal + " goal tasks completed";
+
+    document.getElementById("goalProgressBar").max = goal;
+    document.getElementById("goalProgressBar").value = progress;
+    if (completed >= goal) {
+    document.getElementById("goalProgressBar").classList.add("completed");
+} else {
+    document.getElementById("goalProgressBar").classList.remove("completed");
+}
+    let goalMessage = document.getElementById("goalMessage");
+
+if (completed >= goal) {
+    goalMessage.textContent = "🎉 Congratulations! Daily goal completed!";
+} else {
+    goalMessage.textContent = "";
+}
+}
+function addTask() {
+            let subject = document.getElementById("subject").value;
+            let task = document.getElementById("task").value;
+            let studyTime = document.getElementById("studyTime").value; 
+            
+            if (subject === "" || task === "") {
+                alert("Please enter both subject and task!");
+                return;
+            }
+            let existingTasks = document.querySelectorAll("#taskList li");
+
+for (let existingTask of existingTasks) {
+    if (existingTask.textContent.includes(subject + " (") &&
+        existingTask.textContent.includes(": " + task)) {
+        alert("This task already exists!");
+        return;
+    }
+}
+
+            let li = document.createElement("li");
+            li.textContent = subject + " (" +
+    (studyTime || "No time selected") + "): " + task + " ";
+    let hour = studyTime ? Number(studyTime.split(":")[0]) : -1;
+
+if (hour === -1) {
+    li.dataset.period = "none";
+} else if (hour < 12) {
+    li.dataset.period = "morning";
+} else if (hour < 17) {
+    li.dataset.period = "afternoon";
+} else {
+    li.dataset.period = "evening";
+}
+let editButton = document.createElement("button");
+editButton.textContent = "Edit";
+
+editButton.onclick = function () {
+    let newSubject = prompt("Enter new subject:", subject);
+    if (newSubject === null || newSubject.trim() === "") return;
+
+    let newTask = prompt("Enter new task:", task);
+    let newStudyTime = prompt(
+    "Enter new study time (HH:MM):",
+    studyTime || ""
+);
+
+if (newStudyTime === null) return;
+    if (newTask === null || newTask.trim() === "") return;
+
+    subject = newSubject.trim();
+    studyTime = newStudyTime.trim();
+    task = newTask.trim();
+
+    li.firstChild.textContent = subject + " (" +
+    (studyTime || "No time selected") + "): " + task + " ";
+
+let hour = studyTime ? Number(studyTime.split(":")[0]) : -1;
+
+if (hour === -1) {
+    li.dataset.period = "none";
+} else if (hour < 12) {
+    li.dataset.period = "morning";
+} else if (hour < 17) {
+    li.dataset.period = "afternoon";
+} else {
+    li.dataset.period = "evening";
+}
+    saveTasks();
+};
+let completeButton = document.createElement("button");
+completeButton.textContent = "Complete";
+
+completeButton.onclick = function () {
+    let isCompleted = li.style.textDecoration === "line-through";
+
+    if (isCompleted) {
+        li.style.textDecoration = "none";
+        li.style.color = "";
+        completeButton.textContent = "Complete";        
+        completeButton.disabled = false;
+        delete li.dataset.completedDate;
+    } else {
+        li.style.textDecoration = "line-through";
+        li.style.color = "gray";
+        completeButton.textContent = "Undo";
+        li.dataset.completedDate = new Date().getFullYear() + "-" +
+    String(new Date().getMonth() + 1).padStart(2, "0") + "-" +
+    String(new Date().getDate()).padStart(2, "0");
+        completeButton.disabled = false;
+        li.dataset.completedDate = getLocalDate();
+    }
+
+    saveTasks();
+    updateProgress();
+    updateGoalProgress();
+    updateTaskCount();
+    updateWeeklySummary();
+};
+
+
+let deleteButton = document.createElement("button");
+deleteButton.textContent = "Delete";
+
+deleteButton.onclick = function () {
+    li.remove();
+    saveTasks();
+    console.log(localStorage.getItem("studyPlannerTasks"));
+    updateProgress();
+    updateGoalProgress();
+    updateTaskCount();
+    updateWeeklySummary();    
+};
+
+li.appendChild(editButton);
+li.appendChild(completeButton);
+li.appendChild(deleteButton);
+
+            document.getElementById("taskList").appendChild(li);
+            
+            saveTasks();
+             updateProgress();
+             updateGoalProgress();
+             updateTaskCount();             
+            document.getElementById("subject").value = "";
+            document.getElementById("task").value = "";
+        }
+        function filterTasks() {
+    let filter = document.getElementById("timeFilter").value;
+    let tasks = document.querySelectorAll("#taskList li");
+
+    tasks.forEach(function(li) {
+        if (filter === "all" || li.dataset.period === filter) {
+            li.style.display = "";
+        } else {
+            li.style.display = "none";
+        }
+    });
+}
+function searchTasks() {
+    let search = document.getElementById("taskSearch").value.toLowerCase();
+    let selectedTime = document.getElementById("timeFilter").value;
+    let selectedStatus = document.getElementById("statusFilter").value;
+    let tasks = document.querySelectorAll("#taskList li");
+
+    tasks.forEach(function(li) {
+        let matchesSearch = li.textContent.toLowerCase().includes(search);
+        let matchesTime = selectedTime === "all" || li.dataset.period === selectedTime;
+        let isCompleted = li.style.textDecoration.includes("line-through");
+        let matchesStatus =
+            selectedStatus === "all" ||
+            (selectedStatus === "completed" && isCompleted) ||
+            (selectedStatus === "pending" && !isCompleted);
+
+        li.style.display =
+            matchesSearch && matchesTime && matchesStatus ? "" : "none";
+    });
+}
+document.getElementById("taskSearch").addEventListener("input", searchTasks);
+
+        document.getElementById("timeFilter").addEventListener("change", searchTasks);
+        document.getElementById("statusFilter").addEventListener("change", searchTasks);
+    loadTasks();
+    updateProgress();
+    updateGoalProgress();
+    updateTaskCount();
+    function sortTasksByTime() {
+    let taskList = document.getElementById("taskList");
+    let tasks = Array.from(taskList.children);
+
+    tasks.sort(function(a, b) {
+        let timeA = a.textContent.match(/\((\d{2}):(\d{2})\)/);
+        let timeB = b.textContent.match(/\((\d{2}):(\d{2})\)/);
+
+        if (!timeA) return 1;
+        if (!timeB) return -1;
+
+        return (Number(timeA[1]) * 60 + Number(timeA[2])) -
+               (Number(timeB[1]) * 60 + Number(timeB[2]));
+    });
+
+    tasks.forEach(function(task) {
+        taskList.appendChild(task);
+    });
+    saveTasks();
+    
+}
+    function sortTasksBySubject() {
+    let taskList = document.getElementById("taskList");
+    let tasks = Array.from(taskList.children);
+
+    tasks.sort(function(a, b) {
+        let subjectA = a.textContent.split("(")[0].trim().toLowerCase();
+        let subjectB = b.textContent.split("(")[0].trim().toLowerCase();
+
+        return subjectA.localeCompare(subjectB);
+    });
+
+    tasks.forEach(function(task) {
+        taskList.appendChild(task);
+    });
+
+    saveTasks();
+}
+    let timerSeconds = 25 * 60;
+let timerInterval = null;
+
+function updateTimerDisplay() {
+    let minutes = Math.floor(timerSeconds / 60);
+    let seconds = timerSeconds % 60;
+
+    document.getElementById("timerDisplay").textContent =
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
+}
+
+document.getElementById("startTimer").onclick = function() {
+    if (timerInterval !== null) return;
+
+    timerInterval = setInterval(function() {
+        if (timerSeconds > 0) {
+            timerSeconds--;
+            updateTimerDisplay();
+        } else {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            alert("Focus session complete!");
+        }
+    }, 1000);
+};
+document.getElementById("pauseTimer").onclick = function() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+};
+    document.getElementById("resetTimer").onclick = function() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerSeconds = 25 * 60;
+    updateTimerDisplay();
+};
+document.getElementById("addTimetableEntry").onclick = function() {
+    let day = document.getElementById("timetableDay").value;
+    let subject = document.getElementById("timetableSubject").value.trim();
+    let time = document.getElementById("timetableTime").value;
+
+    if (subject === "" || time === "") {
+        alert("Please enter a subject and study time.");
+        return;
+    }
+
+    let li = document.createElement("li");
+    li.textContent = day + " - " + subject + " (" + time + ") ";
+
+let deleteButton = document.createElement("button");
+deleteButton.textContent = "Delete";
+
+deleteButton.onclick = function() {
+    li.remove();
+    saveTimetable();
+};
+
+li.appendChild(deleteButton);
+
+    document.getElementById("timetableList").appendChild(li);
+    saveTimetable();
+    console.log("Saving timetable now");
+
+    document.getElementById("timetableSubject").value = "";
+    document.getElementById("timetableTime").value = "";
+};
+function saveTimetable() {
+    localStorage.setItem(
+        "weeklyTimetable",
+        document.getElementById("timetableList").innerHTML
+    );
+}
+function loadTimetable() {
+    let savedTimetable = localStorage.getItem("weeklyTimetable");
+
+    if (savedTimetable) {
+        document.getElementById("timetableList").innerHTML = savedTimetable;
+        document.getElementById("timetableList")
+    .querySelectorAll("li").forEach(function(li) {
+        let deleteButton = li.querySelector("button");
+
+        if (deleteButton) {
+            deleteButton.onclick = function() {
+                li.remove();
+                saveTimetable();
+            };
+        }
+    });
+    }
+}
+function filterTimetableByDay() {
+    let selectedDay = document.getElementById("dayFilter").value;
+    let entries = document.querySelectorAll("#timetableList li");
+
+    entries.forEach(function(entry) {
+        let entryDay = entry.textContent.split(" - ")[0];
+
+        if (selectedDay === "all" || entryDay === selectedDay) {
+            entry.style.display = "";
+        } else {
+            entry.style.display = "none";
+        }
+    });
+}
+
+document.getElementById("dayFilter").addEventListener("change", filterTimetableByDay);
+window.addEventListener("load", function() {
+    loadTimetable();
+});
+document.getElementById("exportBackup").onclick = function () {
+    let backup = {
+        tasks: localStorage.getItem("studyPlannerTasks") || "",
+        timetable: localStorage.getItem("weeklyTimetable") || ""
+    };
+
+    let file = new Blob(
+        [JSON.stringify(backup, null, 2)],
+        { type: "application/json" }
+    );
+
+    let link = document.createElement("a");
+    link.href = URL.createObjectURL(file);
+    link.download = "study-planner-backup.json";
+    link.click();
+
+    URL.revokeObjectURL(link.href);
+};
+document.getElementById("importBackup").onclick = function () {
+    let fileInput = document.getElementById("importBackupFile");
+    let file = fileInput.files[0];
+
+    if (!file) {
+        alert("Please select a backup file first.");
+        return;
+    }
+
+    let reader = new FileReader();
+
+    reader.onload = function (event) {
+        try {
+            let backup = JSON.parse(event.target.result);
+
+            if (
+                typeof backup.tasks !== "string" ||
+                typeof backup.timetable !== "string"
+            ) {
+                alert("Invalid backup file.");
+                return;
+            }
+
+            if (!confirm("Import backup? Current tasks and timetable will be replaced.")) {
+                return;
+            }
+
+            localStorage.setItem("studyPlannerTasks", backup.tasks);
+            localStorage.setItem("weeklyTimetable", backup.timetable);
+
+            location.reload();
+        } catch (error) {
+            alert("Could not read the backup file.");
+        }
+    };
+
+    reader.readAsText(file);
+};
+</script>
+</body> 
+</html>
