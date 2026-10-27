@@ -247,6 +247,7 @@ body {
     <button onclick="addTask()">Add Task</button>
     <label for="taskReminder">Study Reminder:</label>
 <input type="datetime-local" id="taskReminder">
+<button id="enableNotifications">Enable Notifications</button>
 </div>
 
 <div id="myTasksSection">
@@ -1017,6 +1018,32 @@ document.getElementById("importBackup").onclick = function () {
 
     reader.readAsText(file);
 };
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+        navigator.serviceWorker.register("./sw.js")
+            .then(function () {
+                console.log("Service Worker registered successfully.");
+            })
+            .catch(function (error) {
+                console.error("Service Worker registration failed:", error);
+            });
+    });
+}
+document.getElementById("enableNotifications").onclick = async function () {
+    if (!("Notification" in window)) {
+        alert("Notifications are not supported in this browser.");
+        return;
+    }
+
+    let permission = await Notification.requestPermission();
+
+    if (permission === "granted") {
+        alert("Notifications enabled!");
+    } else {
+        alert("Notification permission was not granted.");
+    }
+};
+
 </script>
 </body> 
 </html>
