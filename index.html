@@ -1038,12 +1038,17 @@ document.getElementById("enableNotifications").onclick = async function () {
     let permission = await Notification.requestPermission();
 
     if (permission === "granted") {
-        alert("Notifications enabled!");
+        alert("Notification permission enabled!");
+
+navigator.serviceWorker.ready.then(function (registration) {
+    registration.showNotification("Study Planner", {
+        body: "Test notification! Your study planner is ready."
+    });
+});
     } else {
         alert("Notification permission was not granted.");
     }
 };
-
 </script>
 </body> 
 </html>
