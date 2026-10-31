@@ -1030,36 +1030,56 @@ if ("serviceWorker" in navigator) {
     });
 }
 document.getElementById("enableNotifications").onclick = async function () {
-    if (!("Notification" in window)) {
-        alert("Notifications are not supported in this browser.");
-        return;
-    }
-
-    let permission = await Notification.requestPermission();
+    const permission = await Notification.requestPermission();
 
     if (permission === "granted") {
-        alert("Notification permission enabled!");
+        alert("Notifications enabled!");
 
-navigator.serviceWorker.ready.then(function (registration) {
-    registration.showNotification("Study Planner", {
-        body: "Test notification! Your study planner is ready."
-    });
-});
+        const registration = await navigator.serviceWorker.ready;
+        await registration.showNotification("Study Planner", {
+            body: "Notifications are working!"
+        });
     } else {
-        alert("Notification permission was not granted.");
+        alert("Notifications are blocked. Allow them in browser site settings.");
     }
 };
-document.getElementById("taskReminder").addEventListener("change", function () {
-    let reminderTime = this.value;
+let reminderTimeout = null;
 
-    if (!reminderTime) {
-        return;
-    }
+function scheduleStudyReminder(reminderTime) {
+    clearTimeout(reminderTimeout);
+
+    if (!reminderTime) return;
+
+    const delay = new Date(reminderTime).getTime() - Date.now();
+
+    if (delay <= 0) return;
+
+    reminderTimeout = setTimeout(async function () {
+        if (Notification.permission !== "granted") return;
+
+        const registration = await navigator.serviceWorker.ready;
+
+        registration.showNotification("Study Planner", {
+            body: "It's time to study!",
+            tag: "study-reminder"
+        });
+    }, delay);
+}
+
+document.getElementById("taskReminder").addEventListener("change", function () {
+    const reminderTime = this.value;
+
+    if (!reminderTime) return;
 
     localStorage.setItem("studyReminderTime", reminderTime);
-
-    alert("Study reminder time saved!");
+    scheduleStudyReminder(reminderTime);
 });
+
+const savedReminder = localStorage.getItem("studyReminderTime");
+
+if (savedReminder) {
+    scheduleStudyReminder(savedReminder);
+}
 </script>
 </body> 
 </html>
