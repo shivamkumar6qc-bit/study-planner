@@ -1032,7 +1032,7 @@ if ("serviceWorker" in navigator) {
 };
 
 firebase.initializeApp(firebaseConfig);
-        navigator.serviceWorker.register("./sw.js")
+       navigator.serviceWorker.register("./sw.js")
 .then(async function (registration) {
     const messaging = firebase.messaging();
 
@@ -1044,7 +1044,7 @@ firebase.initializeApp(firebaseConfig);
     }
 
     const token = await messaging.getToken({
-        vapidKey: "BGPAu8nImE8LSdyExjTK_K86bQHghOg8zsFi5Un1ojE1uhgmjqjbVt1l5XpA_f5H73lSANwbyWm3d_VAWnIi3JU".
+        vapidKey: "BGPAu8nImE8LSdyExjTK_K86bQHghOg8zsFi5Un1ojE1uhgmjqjbVt1l5XpA_f5H73lSANwbyWm3d_VAWnIi3JU",
         serviceWorkerRegistration: registration
     });
 
@@ -1057,7 +1057,7 @@ firebase.initializeApp(firebaseConfig);
     console.error("FCM setup failed:", error);
 });
 
-            .then(function () {
+            then(function () {
                 console.log("Service Worker registered successfully.");
             })
             .catch(function (error) {
