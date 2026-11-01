@@ -357,7 +357,9 @@ body {
 
     <ul id="timetableList"></ul>
 </div>
-    <script>
+       <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js"></script>
+       <script>
        function saveTasks() {
     localStorage.setItem("studyPlannerTasks", 
         document.getElementById("taskList").innerHTML);
@@ -1020,7 +1022,41 @@ document.getElementById("importBackup").onclick = function () {
 };
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
+        const firebaseConfig = {
+    apiKey: "AIzaSyCPtKa9Kx3sutOWggVS5GOnbOcr_b7yj-U",
+  authDomain: "study-planner-notifications.firebaseapp.com",
+  projectId: "study-planner-notifications",
+  storageBucket: "study-planner-notifications.firebasestorage.app",
+  messagingSenderId: "442677879515",
+  appId: "1:442677879515:web:9ab9630a4cffe1e716a2fe"
+};
+
+firebase.initializeApp(firebaseConfig);
         navigator.serviceWorker.register("./sw.js")
+.then(async function (registration) {
+    const messaging = firebase.messaging();
+
+    const permission = await Notification.requestPermission();
+
+    if (permission !== "granted") {
+        alert("Notification permission denied.");
+        return;
+    }
+
+    const token = await messaging.getToken({
+        vapidKey: "BGPAu8nImE8LSdyExjTK_K86bQHghOg8zsFi5Un1ojE1uhgmjqjbVt1l5XpA_f5H73lSANwbyWm3d_VAWnIi3JU".
+        serviceWorkerRegistration: registration
+    });
+
+    if (token) {
+        localStorage.setItem("fcmToken", token);
+        console.log("FCM Token saved successfully!");
+    }
+})
+.catch(function (error) {
+    console.error("FCM setup failed:", error);
+});
+
             .then(function () {
                 console.log("Service Worker registered successfully.");
             })

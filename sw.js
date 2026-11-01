@@ -1,17 +1,27 @@
-self.addEventListener("push", function (event) {
-    let data = {};
+importScripts("https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js");
+const firebaseConfig = {
+    apiKey: "AIzaSyCPtKa9Kx3sutOWggVS5GOnbOcr_b7yj-U",
+  authDomain: "study-planner-notifications.firebaseapp.com",
+  projectId: "study-planner-notifications",
+  storageBucket: "study-planner-notifications.firebasestorage.app",
+  messagingSenderId: "442677879515",
+  appId: "1:442677879515:web:9ab9630a4cffe1e716a2fe"
+};
 
-    if (event.data) {
-        data = event.data.json();
-    }
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
+messaging.onBackgroundMessage(function (payload) {
+    const notificationTitle =
+        payload.notification?.title || "Study Planner";
 
-    let title = data.title || "Study Planner";
-    let options = {
-        body: data.body || "Bhai, padhai ka time ho gaya!",
+    const notificationOptions = {
+        body: payload.notification?.body || "Bhai, padhai ka time ho gaya!",
         icon: "./icon.png"
     };
 
-    event.waitUntil(
-        self.registration.showNotification(title, options)
+    self.registration.showNotification(
+        notificationTitle,
+        notificationOptions
     );
 });
