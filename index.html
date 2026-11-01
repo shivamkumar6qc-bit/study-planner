@@ -1027,6 +1027,16 @@ if ("serviceWorker" in navigator) {
 
             console.log("Service Worker registered successfully.");
 
+            const firebaseConfig = {
+    apiKey: "AIzaSyCPtKa9Kx3sutOWggVS5GOnbOcr_b7yj-U",
+    authDomain: "study-planner-notifications.firebaseapp.com",
+    projectId: "study-planner-notifications",
+    storageBucket: "study-planner-notifications.firebasestorage.app",
+    messagingSenderId: "442677879515",
+    appId: "1:442677879515:web:9ab9630a4cffe1e716a2fe"
+};
+
+firebase.initializeApp(firebaseConfig);
             const messaging = firebase.messaging();
 
             const permission = await Notification.requestPermission();
